@@ -30,7 +30,7 @@ mod incrementer {
         pub fn new(init_value: u32) -> Self {
             Self {
                 my_number: init_value,
-                my_account: Self::env().caller();//Control de acceso para el possedor de la cuenta
+                my_account: Self::env().caller(),//Control de acceso para el possedor de la cuenta
                 my_number_map: ink_storage::collections::HashMap::new(),
             }
         }
