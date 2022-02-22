@@ -94,7 +94,7 @@ mod incrementer {
         #[ink::test]
         fn default_works() {
             let incrementer = Incrementer::default();
-            assert_eq!(incrementer.get(), 0);
+            assert_eq!(incrementer.getNumber(), 0);
         }
 
         /// We test a simple use case of our contract.
