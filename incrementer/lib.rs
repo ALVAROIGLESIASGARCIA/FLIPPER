@@ -11,14 +11,11 @@ mod incrementer {
     /// to add new static storage fields to your contract.
     #[ink(storage)]
     pub struct Incrementer {
-        /// Stores a single `bool` value on the storage.
-        my_value: bool,
+        
         //Store some number
         my_number: u32,
         // Store some AccountId
         my_account: AccountId,
-        // Store some Balance
-        my_balance: Balance,
         // Store a mapping from AccountIds to a u32
         my_number_map: ink_storage::collections::HashMap<AccountId, u32>,
     }
@@ -39,9 +36,7 @@ mod incrementer {
         pub fn default() -> Self {
             Self{
                 my_number: 0,
-                my_value: Default::default(),
                 my_account: Default::default(),
-                my_balance: Default::default(),
                 my_number_map: Default::default(),
             }
         }
@@ -59,19 +54,6 @@ mod incrementer {
             *balance
         }
         /// A message that can be called on instantiated contracts.
-        /// This one flips the value of the stored `bool` from `true`
-        /// to `false` and vice versa.
-        #[ink(message)]
-        pub fn flip(&mut self) {
-            self.value = !self.value;
-        }
-
-        /// Simply returns the current value of our `bool`.
-        #[ink(message)]
-        pub fn getBool(&self) -> bool {
-            self.my_value
-        }
-
         #[ink(message)]
         pub fn getNumber(&self) -> u32 {
             self.my_number
@@ -85,11 +67,6 @@ mod incrementer {
         #[ink(message)]
         pub fn getAccount(&self) -> AccountId {
             self.my_account
-        }
-
-        #[ink(message)]
-        pub fn getBalance(&self) -> Balance {
-            self.my_balance
         }
 
         // Add a value to the existing value for the calling AccountId
@@ -124,9 +101,9 @@ mod incrementer {
         #[ink::test]
         fn it_works() {
             let mut incrementer = Incrementer::new(42);
-            assert_eq!(incrementer.get(), 42);
+            assert_eq!(incrementer.getNumber(), 42);
             incrementer.incrementar(5);
-            assert_eq!(incrementer.get(), 47);
+            assert_eq!(incrementer.getNumber(), 47);
         }
 
         #[ink::test]
@@ -135,7 +112,7 @@ mod incrementer {
             assert_eq!(contract.getNumber(), 11);
             assert_eq!(contract.get_my_number_map(), 0);
             contract.sumaNuevoNumber(5);
-            assert_eq!(contract.get_mine(), 5);
+            assert_eq!(contract.get_my_number_map(), 5);
         }
     }
 }
