@@ -1,8 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\flipper"
+    "\\erc20"
   ],
-  "SelectedNode": "\\flipper\\Cargo.toml",
+  "SelectedNode": "\\erc20\\lib.rs",
   "PreviewInSolutionExplorer": false
 }

@@ -33,9 +33,29 @@ mod erc20 {
         pub fn balance_of(&self, owner: AccountId) -> Balance {
             self.balance_of_or_zero(&owner)
         }
+        //Funcion de transferencia de tokens
+        #[ink(message)]
+        pub fn transfer(&mut self, to: AccountId, value: Balance) -> bool {
+            self.transfer_from_to(self.env().caller(), to, value)
+        }
 
         fn balance_of_or_zero(&self, owner: &AccountId) -> Balance {
             *self.balances.get(owner).unwrap_or(&0)
+        }
+
+        //Funcion interna de transfererencia de tokens
+        fn transfer_from_to(&mut self, from: AccountId, to: AccountId, value: Balance) -> bool {
+            let from_balance = self.balance_of_or_zero(&from);
+            if (from_balance - value) < value {
+                return false
+            }
+            // Update the sender's balance.
+            self.balances.insert(from, from_balance - value);
+            // Update the receiver's balance.
+            let to_balance = self.balance_of_or_zero(&to);
+            self.balances.insert(to, to_balance + value);
+
+            true
         }
     }
 
@@ -58,5 +78,13 @@ mod erc20 {
             assert_eq!(contract.balance_of(AccountId::from([0x1; 32])), 100);
             assert_eq!(contract.balance_of(AccountId::from([0x0; 32])), 0);
         }
+
+        #[ink::test]
+        fn transfer_works() {
+            let mut contract = Erc20::new(100);
+            assert_eq!(contract.balance_of(AccountId::from([0x1; 32])), 100);
+            assert!(contract.transfer(AccountId::from([0x0; 32]), 10));
+            assert_eq!(contract.balance_of(AccountId::from([0x0; 32])), 10);
+            assert!(!contract.transfer(AccountId::from([0x0; 32]), 100));
     }
 }
