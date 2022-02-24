@@ -86,5 +86,6 @@ mod erc20 {
             assert!(contract.transfer(AccountId::from([0x0; 32]), 10));
             assert_eq!(contract.balance_of(AccountId::from([0x0; 32])), 10);
             assert!(!contract.transfer(AccountId::from([0x0; 32]), 100));
+        }
     }
 }
