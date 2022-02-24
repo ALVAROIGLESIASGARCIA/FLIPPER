@@ -1,6 +1,7 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 use ink_lang as ink;
+use ink_storage::collections::{Vec, HashMap, Stash, Bitvec};
 
 #[ink::contract]
 mod erc20 {
