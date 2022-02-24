@@ -46,7 +46,7 @@ mod erc20 {
         //Funcion interna de transfererencia de tokens
         fn transfer_from_to(&mut self, from: AccountId, to: AccountId, value: Balance) -> bool {
             let from_balance = self.balance_of_or_zero(&from);
-            if (from_balance - value) < value {
+            if from_balance < value {
                 return false
             }
             // Update the sender's balance.
@@ -85,8 +85,7 @@ mod erc20 {
             assert_eq!(contract.balance_of(AccountId::from([0x1; 32])), 100);
             assert!(contract.transfer(AccountId::from([0x0; 32]), 10));
             assert_eq!(contract.balance_of(AccountId::from([0x0; 32])), 10);
-            assert!(!contract.transfer(AccountId::from([0x0; 32]), 90));
-            assert_eq!(contract.balance_of(AccountId::from([0x0; 32])), 100);
+            assert!(!contract.transfer(AccountId::from([0x0; 32]), 100));
         }
     }
 }
